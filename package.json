@@ -1,0 +1,28 @@
+{
+  "name": "quizebot",
+  "version": "1.0.0",
+  "description": "Bot for telegram quize",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/George70-svg/QuizeBot.git"
+  },
+  "author": "AntonS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/George70-svg/QuizeBot/issues"
+  },
+  "homepage": "https://github.com/George70-svg/QuizeBot#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "node-schedule": "^2.1.1",
+    "telegraf": "^4.12.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

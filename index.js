@@ -22,7 +22,7 @@ bot.start((ctx) => {
 })
 
 const startQuizOnTime = (ctx) => {
-  schedule.scheduleJob('12 23 * * *', async () => {
+  schedule.scheduleJob('12 00 * * *', async () => {
     try {
       await createQuiz(ctx)
     } catch (error) {

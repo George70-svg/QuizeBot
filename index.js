@@ -6,37 +6,67 @@ const common = require('./const')
 const { questions } = require("./questions")
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
+const jobs = []
+let quizJob = null
 
-bot.start((ctx) => {
+//Команда старт (запуск бота по /start)
+bot.start(async (ctx) => {
   const currentUserId = ctx.update.message.from.id
 
   if(currentUserId == process.env.HOST_ID) {
-    sendSticker(common.welcomeSticker, ctx)
-    sendMessage('Добрый день, я телеграм-бот, который будет проводить ежедневную викторину!', ctx)
-
-    startQuizOnTime(ctx)
+    await sendSticker(common.welcomeSticker, ctx)
+    await sendMessage('Добрый день, я телеграм-бот, который будет проводить ежедневную викторину!', ctx)
+    await startQuizOnTime(ctx)
   } else {
-    sendSticker(common.slaveSticker, ctx)
-    ctx.reply(`Извините, я выполняю команды только от моего хозяина.`)
+    await sendSticker(common.slaveSticker, ctx)
+    await sendMessage('Извините, я выполняю команды только от моего хозяина.', ctx)
   }
 })
 
+//Команда стоп (остановить работу бота по /stop)
+bot.command('stop', async (ctx) => {
+  const currentUserId = ctx.update.message.from.id
+
+  if(currentUserId == process.env.HOST_ID) {
+    await stopQuizOnTime()
+  } else {
+    await sendSticker(common.slaveSticker, ctx)
+    await sendMessage('Извините, я выполняю команды только от моего хозяина.', ctx)
+  }
+})
+
+//Создать квиз в определённое время
 const startQuizOnTime = (ctx) => {
-  schedule.scheduleJob('12 00 * * *', async () => {
+  const { min, hour } = getTime()
+
+  quizJob = schedule.scheduleJob(`${min} ${hour} * * *`, async () => {
     try {
       await createQuiz(ctx)
     } catch (error) {
       console.log(error)
     }
   })
+
+  jobs.push(quizJob)
 }
 
+//Функция для остановки созданых тасок
+const stopQuizOnTime = () => {
+  if(jobs.length > 0) {
+    jobs.forEach(job => {
+      job.cancel()
+    })
+  }
+}
+
+//Функция для создания опроса
 const createQuiz = async (ctx) => {
   const { question, options, answer } = getQuestion()
   await createQuizMessage(ctx)
   await bot.telegram.sendPoll(ctx.chat.id, question, options, { type: 'quiz', is_anonymous: false, correct_option_id: answer })
 }
 
+//Функция для создания приветственного сообщения
 const createQuizMessage = async (ctx) => {
   const randomPhraseNumber = Math.floor(Math.random() * 10)
   const randomStickerNumber = Math.floor(Math.random() * 4)
@@ -45,6 +75,7 @@ const createQuizMessage = async (ctx) => {
   await ctx.replyWithHTML(common.welcomePhrases[randomPhraseNumber])
 }
 
+//Функция для получения вопроса дня
 const getQuestion = () => {
   const dayOfMonth = new Date().getDate()
 
@@ -54,6 +85,13 @@ const getQuestion = () => {
   const answer = currentQuestion.options.indexOf(currentQuestion.answer)
 
   return { question, options, answer }
+}
+
+//Функция для получения текущего часа и минуты + 1 от времени запроса
+const getTime = () => {
+  const hour = new Date().getHours()
+  const min = new Date().getMinutes() + 1
+  return { min, hour }
 }
 
 const sendSticker = (stickerId, ctx) => {

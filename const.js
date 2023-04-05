@@ -1,5 +1,6 @@
 const commands = `
-/start - Запустить бота
+/start - Запустить квиз
+/stop - Остановить квиз
 `
 
 const stickers = [

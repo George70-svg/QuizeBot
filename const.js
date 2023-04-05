@@ -1,6 +1,7 @@
 const commands = `
 /start - Запустить квиз
 /stop - Остановить квиз
+/check - Проверить бота
 `
 
 const stickers = [
@@ -13,6 +14,7 @@ const stickers = [
 
 const slaveSticker = 'CAACAgIAAx0CdTiAfQACAQJkLDnITFybYOJqKgRVu8BrB0iVjwACugIAAs9fiwdwwz1RnDFRdC8E'
 const welcomeSticker = 'CAACAgIAAx0CdTiAfQACAQtkLDw8MtKO6XBgGcATpckLPhdBXgAC5QIAAs9fiweu5Jqk1B2RgC8E'
+const hostSticker = 'CAACAgIAAx0CdTiAfQACAmlkLZQciYCEjR48jAHptkicjxVxVAAC6QIAAs9fiwcDv7hfUN45vS8E'
 
 const welcomePhrases = [
   '<b>Добрый день, друзья! Сегодня для вас снова есть интересный вопрос. Готовы узнать больше о магическом мире и проверить свои знания? Тогда давайте начнём!</b>',
@@ -32,3 +34,4 @@ module.exports.stickers = stickers
 module.exports.welcomePhrases = welcomePhrases
 module.exports.slaveSticker = slaveSticker
 module.exports.welcomeSticker = welcomeSticker
+module.exports.hostSticker = hostSticker

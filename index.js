@@ -37,15 +37,15 @@ bot.command('stop', async (ctx) => {
 
 //Команда проверки бота (проверить бота по /check)
 bot.command('check', async (ctx) => {
-  const currentUserId = ctx.update.message.from.id
+  await sendSticker(common.hostSticker, ctx)
+  await sendMessage('Бот отвечает корректно.', ctx)
+})
 
-  if(currentUserId == process.env.HOST_ID) {
-    await sendSticker(common.hostSticker, ctx)
-    await sendMessage('Бот отвечает корректно.', ctx)
-  } else {
-    await sendSticker(common.slaveSticker, ctx)
-    await sendMessage('Извините, я выполняю команды только от моего хозяина.', ctx)
-  }
+//Команда фейкового запуска бота (запустить бота по /fake-cock-start)
+bot.command('fakeCockStart', async (ctx) => {
+  await sendSticker(common.welcomeSticker, ctx)
+  await sendMessage('Добрый день, я телеграм-бот, который будет проводить ежедневную викторину!', ctx)
+  await startQuizOnTime(ctx)
 })
 
 //Создать квиз в определённое время

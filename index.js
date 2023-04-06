@@ -48,13 +48,6 @@ bot.command('check', async (ctx) => {
   }
 })
 
-//Команда фейкового запуска бота (запустить бота по /fake-cock-start)
-bot.command('fakeCockStart', async (ctx) => {
-  await sendSticker(common.welcomeSticker, ctx)
-  await sendMessage('Добрый день, я телеграм-бот, который будет проводить ежедневную викторину!', ctx)
-  await startQuizOnTime(ctx)
-})
-
 //Создать квиз в определённое время
 const startQuizOnTime = (ctx) => {
   const { min, hour } = getTime()

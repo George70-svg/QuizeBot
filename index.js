@@ -37,8 +37,15 @@ bot.command('stop', async (ctx) => {
 
 //Команда проверки бота (проверить бота по /check)
 bot.command('check', async (ctx) => {
-  await sendSticker(common.hostSticker, ctx)
-  await sendMessage('Бот отвечает корректно.', ctx)
+  const currentUserId = ctx.update.message.from.id
+
+  if(currentUserId == process.env.HOST_ID) {
+    await sendSticker(common.hostSticker, ctx)
+    await sendMessage('Бот отвечает корректно.', ctx)
+  } else {
+    await sendSticker(common.slaveSticker, ctx)
+    await sendMessage('Извините, я выполняю команды только от моего хозяина.', ctx)
+  }
 })
 
 //Команда фейкового запуска бота (запустить бота по /fake-cock-start)
